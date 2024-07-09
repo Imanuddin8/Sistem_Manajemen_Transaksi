@@ -79,7 +79,7 @@
               <th>No</th>
               <th>Jumlah</th>
               <th>Total</th>
-              <th>Tanggal</th>
+              <th>Tanggal & Waktu</th>
               <th>Pembuat</th>
               <th>Aksi</th>
             </tr>
@@ -98,8 +98,11 @@
                             <a href="{{route('penjualan.edit', ['id' => $row->id])}}" type="button" class="btn btn-icon btn-warning mr-2" name="edit">
                                 <i class="fa fa-edit text-white" aria-hidden="true"></i>
                             </a>
-                            <a href="{{route('penjualan.delete', ['id' => $row->id])}}}" type="button" class="btn btn-icon btn-danger" name="delete" onclick="if(!confirm('Apakah anda yakin akan Menghapus?')){return false}">
+                            <a href="{{route('penjualan.delete', ['id' => $row->id])}}}" type="button" class="btn btn-icon btn-danger mr-2" name="delete" onclick="if(!confirm('Apakah anda yakin akan Menghapus?')){return false}">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                            <a href="{{route('penjualan.detail', ['id' => $row->id])}}}" type="button" class="btn btn-icon btn-info" name="detail">
+                                <i class="fa-solid fa-circle-info"></i>
                             </a>
                         </td>
                     </tr>

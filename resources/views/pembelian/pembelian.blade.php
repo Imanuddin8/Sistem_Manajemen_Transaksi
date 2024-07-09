@@ -78,7 +78,7 @@
                   <th>Nama Produk</th>
                   <th>Jumlah</th>
                   <th>Total</th>
-                  <th>Tanggal</th>
+                  <th>Tanggal & Waktu</th>
                   <th>Pembuat</th>
                   <th>Aksi</th>
                 </tr>
@@ -90,14 +90,17 @@
                             <td>{{$row->produk->nama_produk}}</td>
                             <td>{{number_format($row->jumlah, 0, ',', '.')}}</td>
                             <td>Rp {{number_format($row->total, 0, ',', '.')}}</td>
-                            <td>{{formatDate($row->tanggal)}}</td>
+                            <td>{{ formatDate($row->tanggal) }}</td>
                             <td>{{$row->user->username}}</td>
                             <td class="d-flex">
                                 <a href="{{route('pembelian.edit', ['id' => $row->id])}}" type="button" class="btn btn-icon btn-warning mr-2" name="edit">
                                     <i class="fa fa-edit text-white" aria-hidden="true"></i>
                                 </a>
-                                <a href="{{route('pembelian.delete', ['id' => $row->id])}}}" type="button" class="btn btn-icon btn-danger" name="delete" onclick="if(!confirm('Apakah anda yakin akan Menghapus?')){return false}">
+                                <a href="{{route('pembelian.delete', ['id' => $row->id])}}}" type="button" class="btn btn-icon btn-danger mr-2" name="delete" onclick="if(!confirm('Apakah anda yakin akan Menghapus?')){return false}">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                                <a href="{{route('pembelian.detail', ['id' => $row->id])}}}" type="button" class="btn btn-icon btn-info" name="detail">
+                                    <i class="fa-solid fa-circle-info"></i>
                                 </a>
                             </td>
                         </tr>

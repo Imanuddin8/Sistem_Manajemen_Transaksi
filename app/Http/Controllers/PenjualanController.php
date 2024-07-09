@@ -42,7 +42,7 @@ class PenjualanController extends Controller
         // Mengembalikan view 'penjualan.create' dengan data produk, penjualan, dan user yang telah diambil
         return view('penjualan.create', compact('penjualan', 'produk', 'user'));
     }
-    
+
     public function store(StorepenjualanRequest $request)
     {
         // Mengambil semua data produk dan user dari database
@@ -79,8 +79,10 @@ class PenjualanController extends Controller
             'no' => $request->no,               // Menyimpan no penjualan yang dikirim melalui request
             'jumlah' => $jumlah,                // Menyimpan jumlah penjualan yang telah diproses sebelumnya
             'total' => $total,                  // Menyimpan total harga penjualan yang telah dihitung sebelumnya
+            'metode_pembayaran' => $request->metode_pembayaran,               // Menyimpan metode_pembayaran penjualan yang dikirim melalui request
             'tanggal' => $request->tanggal,     // Menyimpan tanggal penjualan yang dikirim melalui request
-            'user_id' => Auth::id()             // Menyimpan user_id dari pengguna yang sedang login
+            'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
+            'catatan' => $request->catatan               // Menyimpan catatan penjualan yang dikirim melalui request
         ]);
 
         // Mengarahkan kembali ke route 'penjualan' dengan pesan sukses
@@ -142,8 +144,10 @@ class PenjualanController extends Controller
             'no' => $request->no,               // Menyimpan no penjualan yang dikirim melalui request
             'jumlah' => $jumlah,                // Menyimpan jumlah penjualan yang telah diproses sebelumnya
             'total' => $total,                  // Menyimpan total harga penjualan yang telah dihitung sebelumnya
+            'metode_pembayaran' => $request->metode_pembayaran,               // Menyimpan metode_pembayaran penjualan yang dikirim melalui request
             'tanggal' => $request->tanggal,     // Menyimpan tanggal penjualan yang dikirim melalui request
-            'user_id' => Auth::id()             // Menyimpan user_id dari pengguna yang sedang login
+            'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
+            'catatan' => $request->catatan               // Menyimpan catatan penjualan yang dikirim melalui request
         ]);
 
         // Mengarahkan kembali ke route 'penjualan' dengan pesan sukses
@@ -172,6 +176,34 @@ class PenjualanController extends Controller
 
         // Mengarahkan ke route 'penjualan' dengan pesan sukses
         return redirect()->route('penjualan')->with('toast_success', 'Transaksi berhasil dihapus.');
+    }
+
+    public function detail($id)
+    {
+        // Mengambil data penjualan berdasarkan ID yang diberikan.
+        $penjualan = penjualan::findOrFail($id);
+
+        // Mengambil semua data produk dan user dari database.
+        $user = User::all();
+        $produk = produk::all();
+
+        // Format jumlah dengan titik ribuan
+        $penjualan->formatted_jumlah = formatNumber($penjualan->jumlah);
+
+        // Memformat total ke dalam format Rupiah.
+        $penjualan->formatted_total = formatRupiah($penjualan->total);
+
+        // Memformat tanggal ke dalam format d/m/y H-i-s.
+        $penjualan->formatted_date = formatDate($penjualan->tanggal);
+
+        // Memformat tanggal ke dalam format d/m/y H-i-s.
+        $penjualan->formatted_date = formatDate($penjualan->created_at);
+
+        // Memformat tanggal ke dalam format d/m/y H-i-s.
+        $penjualan->formatted_date = formatDate($penjualan->updated_at);
+
+        // Mengembalikan view 'penjualan.update' dengan variabel 'produk', 'penjualan', dan 'user'.
+        return view('penjualan.detail', compact('produk','penjualan', 'user'));
     }
 
     public function filter(Request $request)

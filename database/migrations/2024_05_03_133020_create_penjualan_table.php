@@ -19,11 +19,13 @@ return new class extends Migration {
       $table->string('no');
       $table->integer('jumlah');
       $table->integer('total');
-      $table->date('tanggal');
+      $table->string('metode_pembayaran');
+      $table->datetime('tanggal');
       $table
         ->foreignId('user_id')
         ->constrained('users')
         ->onDelete('cascade');
+      $table->string('catatan');
       $table->timestamps();
     });
   }

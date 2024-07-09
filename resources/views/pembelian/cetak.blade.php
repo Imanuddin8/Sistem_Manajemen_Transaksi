@@ -34,7 +34,7 @@
                 <th>Nama Produk</th>
                 <th>Jumlah</th>
                 <th>Total</th>
-                <th>Tanggal</th>
+                <th>Tanggal & Waktu</th>
                 <th>Pembuat</th>
             </tr>
             </thead>

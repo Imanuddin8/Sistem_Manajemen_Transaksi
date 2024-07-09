@@ -49,6 +49,7 @@ Route::middleware('auth', 'role:admin,karyawan')->group(function(){
     Route::get('/pembelian/delete/{id}', [PembelianController::class, 'destroy'])->name('pembelian.delete');
     Route::get('/pembelian/filter', [PembelianController::class, 'filter'])->name('pembelian.filter');
     Route::get('/pembelian/cetak', [PembelianController::class, 'cetak'])->name('pembelian.cetak');
+    Route::get('/pembelian/detail/{id}', [PembelianController::class, 'detail'])->name('pembelian.detail');
 
     // penjualan
     Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan');
@@ -59,4 +60,5 @@ Route::middleware('auth', 'role:admin,karyawan')->group(function(){
     Route::get('/penjualan/delete/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.delete');
     Route::get('/penjualan/filter', [PenjualanController::class, 'filter'])->name('penjualan.filter');
     Route::get('/penjualan/cetak', [PenjualanController::class, 'cetak'])->name('penjualan.cetak');
+    Route::get('/penjualan/detail/{id}', [PenjualanController::class, 'detail'])->name('penjualan.detail');
 });

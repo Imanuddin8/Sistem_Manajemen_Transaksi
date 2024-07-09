@@ -21,27 +21,49 @@
                             <form id="form" action="{{ route('penjualan.update', $penjualan->id) }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
-                                <div class="mb-3">
-                                    <label for="exampleFormControlSelect1" class="form-label">Nama Produk</label>
-                                    <select name="produk_id" id="produk_id" class="form-control" id="exampleFormControlSelect1" aria-label="Default select example" required>
-                                      @foreach ($produk as $ct)
-                                        <option value="{{$ct->id}}" {{$penjualan->produk_id == $ct->id ? 'selected' : ''}} >
-                                          {{$ct->nama_produk}}
-                                        </option>
-                                      @endforeach
-                                    </select>
+                                <div
+                                    class="row justify-content-center align-items-center g-3 mb-3"
+                                >
+                                    <div class="col-12 col-lg-6">
+                                        <label for="exampleFormControlSelect1" class="form-label">Nama Produk</label>
+                                        <select name="produk_id" id="produk_id" class="form-control" id="exampleFormControlSelect1" aria-label="Default select example" required>
+                                            @foreach ($produk as $ct)
+                                                <option value="{{$ct->id}}" {{$penjualan->produk_id == $ct->id ? 'selected' : ''}} >
+                                                {{$ct->nama_produk}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
+                                        <input value="{{$penjualan->jumlah}}" name="jumlah" id="jumlah" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Jumlah produk" oninput="formatNumber(this)" required/>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">No</label>
-                                    <input value="{{$penjualan->no}}" name="no" id="no" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nomor" required/>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
-                                    <input value="{{$penjualan->jumlah}}" name="jumlah" id="jumlah" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Jumlah produk" oninput="formatNumber(this)" required/>
+                                <div
+                                    class="row g-3 mb-3"
+                                >
+                                    <div class="col-12 col-lg-6">
+                                        <label for="exampleFormControlInput1" class="form-label">No</label>
+                                        <input value="{{$penjualan->no}}" name="no" id="no" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nomor" required/>
+                                        <small class="form-text text-red text-muted">Jika tidak ada nomor isi dengan simbol '-' (strip).</small>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <label for="exampleFormControlSelect1" class="form-label">Metode Pembayaran</label>
+                                        <select title="metode pembayaran" name="metode_pembayaran" id="metode_pembayaran" class="form-control" id="exampleFormControlSelect1" aria-label="Default select example" required>
+                                            <option selected value="{{$penjualan->metode_pembayaran}}">{{$penjualan->metode_pembayaran}}</option>
+                                            <option value="tunai">Tunai</option>
+                                            <option value="qris">Qris</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Tanggal</label>
-                                    <input value="{{$penjualan->tanggal}}" name="tanggal" type="date" class="form-control" id="exampleFormControlInput1" required/>
+                                    <input value="{{$penjualan->tanggal}}" name="tanggal" type="datetime-local" class="form-control" id="exampleFormControlInput1" required/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Catatan</label>
+                                    <textarea title="catatan" name="catatan" id="catatan" class="form-control" id="exampleFormControlTextarea1" rows="3">{{$penjualan->catatan}}</textarea>
+                                    <small class="form-text text-red text-muted">Jika tidak ada catatan, isi catatan dengan simbol '-' (strip).</small>
                                 </div>
                                 <div class="d-flex justify-content-end align-items-center gap-2">
                                     <div class="mr-4">

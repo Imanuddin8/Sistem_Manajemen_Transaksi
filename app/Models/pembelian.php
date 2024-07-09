@@ -12,7 +12,7 @@ class pembelian extends Model
 
     protected  $table = 'pembelian';
 
-    protected $fillable = ['produk_id', 'jumlah', 'total', 'tanggal', 'user_id'];
+    protected $fillable = ['produk_id', 'jumlah', 'total', 'metode_pembayaran', 'tanggal', 'user_id', 'catatan'];
 
     public function produk()
     {

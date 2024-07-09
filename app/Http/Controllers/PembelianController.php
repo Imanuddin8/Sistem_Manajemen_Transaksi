@@ -71,8 +71,10 @@ class PembelianController extends Controller
             'produk_id' => $request->produk_id,  // Menyimpan produk_id yang dikirim melalui request
             'jumlah' => $jumlah,                // Menyimpan jumlah pembelian yang telah diproses sebelumnya
             'total' => $total,                  // Menyimpan total harga pembelian yang telah dihitung sebelumnya
+            'metode_pembayaran' => $request->metode_pembayaran,  // Menyimpan metode_pembayaran yang dikirim melalui request
             'tanggal' => $request->tanggal,     // Menyimpan tanggal pembelian yang dikirim melalui request
-            'user_id' => Auth::id()             // Menyimpan user_id dari pengguna yang sedang login
+            'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
+            'catatan' => $request->catatan  // Menyimpan catatan yang dikirim melalui request
         ]);
 
         // Mengarahkan kembali ke route 'pembelian' dengan pesan sukses
@@ -132,14 +134,16 @@ class PembelianController extends Controller
             'produk_id' => $request->produk_id,  // Menyimpan produk_id yang dikirim melalui request
             'jumlah' => $jumlah,                // Menyimpan jumlah pembelian yang telah diproses sebelumnya
             'total' => $total,                  // Menyimpan total harga pembelian yang telah dihitung sebelumnya
+            'metode_pembayaran' => $request->metode_pembayaran,  // Menyimpan metode_pembayaran yang dikirim melalui request
             'tanggal' => $request->tanggal,     // Menyimpan tanggal pembelian yang dikirim melalui request
-            'user_id' => Auth::id()             // Menyimpan user_id dari pengguna yang sedang login
+            'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
+            'catatan' => $request->catatan  // Menyimpan catatan yang dikirim melalui request
         ]);
 
         // Mengarahkan kembali ke route 'pembelian' dengan pesan sukses
         return redirect()->route('pembelian')->with('toast_success', 'Transaksi berhasil diperbarui');
     }
-    
+
     public function destroy($id)
     {
         // Mengambil data pembelian berdasarkan ID yang diberikan.
@@ -162,6 +166,34 @@ class PembelianController extends Controller
 
         // Mengarahkan ke route 'pembelian' dengan pesan sukses
         return redirect()->route('pembelian')->with('toast_success', 'Transaksi berhasil dihapus');
+    }
+
+    public function detail($id)
+    {
+        // Mengambil data pembelian berdasarkan ID yang diberikan.
+        $pembelian = pembelian::findOrFail($id);
+
+        // Mengambil semua data produk dan user dari database.
+        $user = User::all();
+        $produk = produk::all();
+
+        // Format jumlah dengan titik ribuan
+        $pembelian->formatted_jumlah = formatNumber($pembelian->jumlah);
+
+        // Memformat total ke dalam format Rupiah.
+        $pembelian->formatted_total = formatRupiah($pembelian->total);
+
+        // Memformat tanggal ke dalam format d/m/y H-i-s.
+        $pembelian->formatted_date = formatDate($pembelian->tanggal);
+
+        // Memformat tanggal ke dalam format d/m/y H-i-s.
+        $pembelian->formatted_date = formatDate($pembelian->created_at);
+
+        // Memformat tanggal ke dalam format d/m/y H-i-s.
+        $pembelian->formatted_date = formatDate($pembelian->updated_at);
+
+        // Mengembalikan view 'pembelian.update' dengan variabel 'produk', 'pembelian', dan 'user'.
+        return view('pembelian.detail', compact('produk','pembelian', 'user'));
     }
 
     public function filter(Request $request)
