@@ -17,6 +17,6 @@ if (!function_exists('formatRupiah')) {
 
 if (!function_exists('formatNumber')) {
     function formatNumber($value) {
-        return number_format($value, 0, '.', '.');
+        return number_format($value, 0, ',', '.');
     }
 }
