@@ -91,14 +91,18 @@
                             <td>{{number_format($row->jumlah, 0, ',', '.')}}</td>
                             <td>Rp {{number_format($row->total, 0, ',', '.')}}</td>
                             <td>{{ formatDate($row->tanggal) }}</td>
-                            <td>{{$row->user->username}}</td>
-                            <td class="d-flex">
+                            <td>{{ $row->user->username ?? 'User tidak ada' }}</td>
+                            <td class="d-flex justify-content-center">
                                 <a href="{{route('pembelian.edit', ['id' => $row->id])}}" type="button" class="btn btn-icon btn-warning mr-2" name="edit">
                                     <i class="fa fa-edit text-white" aria-hidden="true"></i>
                                 </a>
-                                <a href="{{route('pembelian.delete', ['id' => $row->id])}}}" type="button" class="btn btn-icon btn-danger mr-2" name="delete" onclick="if(!confirm('Apakah anda yakin akan Menghapus?')){return false}">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
+                                <form action="{{ route('pembelian.destroy', $row->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-icon btn-danger mr-2" type="submit" onclick="return confirm('Apakah anda yakin akan Menghapus?');">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </form>
                                 <a href="{{route('pembelian.detail', ['id' => $row->id])}}}" type="button" class="btn btn-icon btn-info" name="detail">
                                     <i class="fa-solid fa-circle-info"></i>
                                 </a>
@@ -113,7 +117,7 @@
   </div>
 </div>
 
-@include('sweetalert::alert')
+
 
 </section>
 

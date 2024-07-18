@@ -15,12 +15,13 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-12 col-md-8 col-lg-6">
+                <div class="col-12 col-lg-8">
                     <div class="card">
                         <div class="card-header">
                             <form id="form" action="{{ route('penjualan.update', $penjualan->id) }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div
                                     class="row justify-content-center align-items-center g-3 mb-3"
                                 >
@@ -43,7 +44,7 @@
                                     class="row g-3 mb-3"
                                 >
                                     <div class="col-12 col-lg-6">
-                                        <label for="exampleFormControlInput1" class="form-label">No</label>
+                                        <label for="exampleFormControlInput1" class="form-label">Nomor</label>
                                         <input value="{{$penjualan->no}}" name="no" id="no" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nomor" required/>
                                         <small class="form-text text-red text-muted">Jika tidak ada nomor isi dengan simbol '-' (strip).</small>
                                     </div>
@@ -93,7 +94,6 @@
             }
         </script>
         <!-- /.container-fluid -->
-        @include('sweetalert::alert')
     </section>
     <!-- /.content -->
 @endsection

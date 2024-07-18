@@ -10,6 +10,7 @@ use App\Http\Requests\UpdatepembelianRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
+use Alert;
 
 class PembelianController extends Controller
 {
@@ -63,6 +64,9 @@ class PembelianController extends Controller
             $selectedProduct->increment('stok', $jumlah);
         }
 
+        // Memeriksa apakah catatan kosong, jika ya, diisi dengan tanda strip (-)
+        $catatan = $request->catatan ? $request->catatan : '-';
+
         // Simpan perubahan stok produk
         $selectedProduct->save();
 
@@ -74,11 +78,12 @@ class PembelianController extends Controller
             'metode_pembayaran' => $request->metode_pembayaran,  // Menyimpan metode_pembayaran yang dikirim melalui request
             'tanggal' => $request->tanggal,     // Menyimpan tanggal pembelian yang dikirim melalui request
             'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
-            'catatan' => $request->catatan  // Menyimpan catatan yang dikirim melalui request
+            'catatan' => $catatan  // Menyimpan catatan yang dikirim melalui request
         ]);
 
         // Mengarahkan kembali ke route 'pembelian' dengan pesan sukses
-        return redirect()->route('pembelian')->with('toast_success', 'Transaksi berhasil ditambahkan');
+        Alert::toast('Transaksi pembelian berhasil ditambahkan!','success');
+        return redirect()->route('pembelian');
     }
 
     public function edit($id)
@@ -141,7 +146,8 @@ class PembelianController extends Controller
         ]);
 
         // Mengarahkan kembali ke route 'pembelian' dengan pesan sukses
-        return redirect()->route('pembelian')->with('toast_success', 'Transaksi berhasil diperbarui');
+        Alert::toast('Transaksi pembelian berhasil diedit!','success');
+        return redirect()->route('pembelian');
     }
 
     public function destroy($id)
@@ -165,7 +171,8 @@ class PembelianController extends Controller
         }
 
         // Mengarahkan ke route 'pembelian' dengan pesan sukses
-        return redirect()->route('pembelian')->with('toast_success', 'Transaksi berhasil dihapus');
+        Alert::toast('Transaksi pembelian berhasil dihapus!','success');
+        return redirect()->route('pembelian');
     }
 
     public function detail($id)

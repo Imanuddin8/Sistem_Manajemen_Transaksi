@@ -43,9 +43,9 @@
                                     class="row g-3 mb-3"
                                 >
                                     <div class="col-12 col-lg-6">
-                                        <label for="exampleFormControlInput1" class="form-label">No</label>
-                                        <input title="nomor" name="no" id="no" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nomor" required value="{{ old('no') }}">
-                                        <small class="form-text text-red text-muted">Jika tidak ada nomor isi dengan simbol '-' (strip).</small>
+                                        <label for="exampleFormControlInput1" class="form-label">Nomor</label>
+                                        <input title="nomor" name="no" id="no" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nomor" value="{{ old('no') }}">
+                                        <small class="form-text text-red text-muted">Kosongi jika tidak ada nomor.</small>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <label for="exampleFormControlSelect1" class="form-label">Metode Pembayaran</label>
@@ -63,7 +63,7 @@
                                 <div class="mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Catatan</label>
                                     <textarea title="catatan" name="catatan" id="catatan" class="form-control" id="exampleFormControlTextarea1" rows="3">{{ old('catatan') }}</textarea>
-                                    <small class="form-text text-red text-muted">Jika tidak ada catatan, isi catatan dengan simbol '-' (strip).</small>
+                                    <small class="form-text text-red text-muted">Kosongi jika tidak ada catatan.</small>
                                 </div>
                                 <div class="d-flex justify-content-end align-items-center">
                                     <div class="mr-4">
@@ -93,7 +93,6 @@
             }
         </script>
         <!-- /.container-fluid -->
-        @include('sweetalert::alert')
     </section>
     <!-- /.content -->
 @endsection

@@ -53,7 +53,7 @@
                             <td>{{number_format($row->jumlah, 0, ',', '.')}}</td>
                             <td>Rp {{number_format($row->total, 0, ',', '.')}}</td>
                             <td>{{formatDate($row->tanggal)}}</td>
-                            <td>{{$row->user->username}}</td>
+                            <td>{{ $row->user->username ?? 'User tidak ada' }}</td>
                         </tr>
                     @endforeach
                 @endif

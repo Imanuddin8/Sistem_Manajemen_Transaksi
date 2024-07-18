@@ -11,21 +11,20 @@ return new class extends Migration {
   public function up(): void
   {
     Schema::create('pembelian', function (Blueprint $table) {
-      $table->id();
-      $table
-        ->foreignId('produk_id')
-        ->constrained('produks')
-        ->onDelete('cascade');
-      $table->integer('jumlah');
-      $table->integer('total');
-      $table->string('metode_pembayaran');
-      $table->datetime('tanggal');
-      $table
-      ->foreignId('user_id')
-      ->constrained('users')
-      ->onDelete('cascade');
-      $table->string('catatan');
-      $table->timestamps();
+        $table->id();
+        $table->foreignId('produk_id')
+              ->constrained('produks')
+              ->onDelete('cascade');
+        $table->integer('jumlah');
+        $table->integer('total');
+        $table->string('metode_pembayaran');
+        $table->datetime('tanggal');
+        $table->foreignId('user_id')
+              ->nullable()
+              ->constrained('users')
+              ->onDelete('set null');
+        $table->string('catatan');
+        $table->timestamps();
     });
   }
 

@@ -45,13 +45,17 @@
                             <td>Rp {{number_format($row->harga_beli, 0, ',', '.')}}</td>
                             <td>Rp {{number_format($row->harga_jual, 0, ',', '.')}}</td>
                             <td>{{number_format($row->stok, 0, ',', '.')}}</td>
-                            <td class="d-flex">
+                            <td class="d-flex justify-content-center">
                                 <a href="{{route('produk.edit', ['id' => $row->id])}}" type="button" class="btn btn-icon btn-warning mr-2" name="edit">
                                     <i class="text-white fa fa-edit" aria-hidden="true"></i>
                                 </a>
-                                <a href="{{route('produk.delete', ['id' => $row->id])}}}" type="button" class="btn btn-icon btn-danger" name="delete" onclick="if(!confirm('Apakah anda yakin akan Menghapus?')){return false}">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
+                                <form action="{{ route('produk.destroy', $row->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-icon btn-danger" type="submit" onclick="return confirm('Apakah anda yakin akan Menghapus?');">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

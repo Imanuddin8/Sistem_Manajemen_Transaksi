@@ -23,6 +23,7 @@
                             <form id="form" action="{{ route('pembelian.update', $pembelian->id) }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div
                                     class="row justify-content-center align-items-center g-3 mb-3"
                                 >

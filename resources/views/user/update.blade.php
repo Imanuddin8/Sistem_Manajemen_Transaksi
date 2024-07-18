@@ -22,6 +22,7 @@
                             <form id="form" action="{{ route('user.update', $user->id) }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div class="mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Nama</label>
                                     <input value="{{ $user->nama }}" name="nama" id="name" type="text" class="form-control" placeholder="Nama User" required />

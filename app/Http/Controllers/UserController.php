@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\pembelian;
 use App\Http\Requests\StoreuserRequest;
 use App\Http\Requests\UpdateuserRequest;
 use Illuminate\Http\Request;
+use Alert;
 
 class UserController extends Controller
 {
@@ -33,7 +35,7 @@ class UserController extends Controller
       return abort(403, 'Unauthorized Page');
     }
 
-    public function store(StoreuserRequest $request)
+    public function store(Request $request)
     {
         if(auth()->user()->role == "admin"){
             // Membuat entri baru dalam tabel `users` menggunakan data yang diterima dari request.
@@ -45,7 +47,8 @@ class UserController extends Controller
             ]);
 
             // Mengarahkan pengguna ke route 'user' dengan pesan sukses menggunakan flash message.
-            return redirect()->route('user')->with('toast_success', 'User berhasil ditambahkan');
+            Alert::toast('User berhasil ditambahkan!','success');
+            return redirect()->route('user');
         }
         return abort(403, 'Unauthorized Page');
     }
@@ -73,7 +76,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateuserRequest $request, $id)
+    public function update(Request $request, $id)
     {
         if(auth()->user()->role == "admin"){
             // Mengambil data user berdasarkan ID yang diberikan.
@@ -95,7 +98,8 @@ class UserController extends Controller
             User::where('id', $id)->update($updateData);
 
             // Mengarahkan ke route 'user' dengan pesan sukses
-            return redirect()->route('user')->with('toast_success', 'user berhasil diperbarui');
+            Alert::toast('User berhasil diperbarui!','success');
+            return redirect()->route('user');
         }
         return abort(403, 'Unauthorized Page');
     }
@@ -110,7 +114,8 @@ class UserController extends Controller
             $user->delete();
 
             // Mengarahkan ke route 'user' dengan pesan sukses
-            return redirect()->route('user')->with('toast_success', 'User berhasil dihapus.');
+            Alert::toast('User berhasil dihapus!','success');
+            return redirect()->route('user');
         }
         return abort(403, 'Unauthorized Page');
     }

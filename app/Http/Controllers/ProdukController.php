@@ -6,6 +6,7 @@ use App\Models\produk;
 use App\Http\Requests\StoreprodukRequest;
 use App\Http\Requests\UpdateprodukRequest;
 use Illuminate\Http\Request;
+use Alert;
 
 class ProdukController extends Controller
 {
@@ -30,7 +31,7 @@ class ProdukController extends Controller
         return view('produk.create', compact('produk'));
     }
 
-    public function store(StoreprodukRequest $request)
+    public function store(Request $request)
     {
         // Hapus titik ribuan dari input jumlah
         $harga_beli = str_replace('.', '', $request->harga_beli);
@@ -49,7 +50,8 @@ class ProdukController extends Controller
         ]);
 
         // Mengarahkan kembali ke route 'produk' dengan pesan sukses
-        return redirect()->route('produk')->with('toast_success', 'Produk berhasil ditambahkan');
+        Alert::toast('Produk berhasil ditambahkan!','success');
+        return redirect()->route('produk');
     }
 
     public function edit($id)
@@ -60,8 +62,8 @@ class ProdukController extends Controller
         // Mengembalikan view 'produk.update' dengan data produk yang telah diambil
         return view('produk.update', compact('produk'));
     }
-    
-    public function update(UpdateprodukRequest $request, $id)
+
+    public function update(Request $request, $id)
     {
         // Mengambil data produk berdasarkan ID yang diberikan.
         $produk = produk::findOrFail($id);
@@ -91,7 +93,8 @@ class ProdukController extends Controller
             'stok' => $produk->stok                 // stok tetap sama jika kategori tidak berubah
         ]);
 
-        return redirect()->route('produk')->with('toast_success', 'Produk berhasil diperbarui');
+        Alert::toast('Produk berhasil diperbarui!','success');
+        return redirect()->route('produk');
     }
 
     public function destroy($id)
@@ -103,6 +106,7 @@ class ProdukController extends Controller
         $produk->delete();
 
         // Mengarahkan ke route 'produk' dengan pesan sukses
-        return redirect()->route('produk')->with('toast_success', 'Produk berhasil dihapus.');
+        Alert::toast('Produk berhasil dihapus!','success');
+        return redirect()->route('produk');
     }
 }

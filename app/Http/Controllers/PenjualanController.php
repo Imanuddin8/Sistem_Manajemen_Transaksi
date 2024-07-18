@@ -10,6 +10,7 @@ use App\Http\Requests\UpdatepenjualanRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
+use Alert;
 
 class PenjualanController extends Controller
 {
@@ -43,7 +44,7 @@ class PenjualanController extends Controller
         return view('penjualan.create', compact('penjualan', 'produk', 'user'));
     }
 
-    public function store(StorepenjualanRequest $request)
+    public function store(Request $request)
     {
         // Mengambil semua data produk dan user dari database
         $user = User::all();
@@ -57,7 +58,9 @@ class PenjualanController extends Controller
 
         // Cek stok produk sebelum melakukan penjualan
         if ($selectedProduct->stok < $jumlah) {
-            return redirect()->back()->with('toast_error', 'Stok produk tidak mencukupi untuk transaksi ini')->withInput();
+            Alert::toast('Stok produk tidak mencukupi untuk transaksi ini!','error');
+            return redirect()->back()->withInput();
+            // return redirect()->back()->with('toast_error', 'Stok produk tidak mencukupi untuk transaksi ini')->withInput();
         }
 
          // Hitung total berdasarkan kategori produk
@@ -74,19 +77,26 @@ class PenjualanController extends Controller
         // Simpan perubahan stok produk
         $selectedProduct->save();
 
+        // Memeriksa apakah catatan kosong, jika ya, diisi dengan tanda strip (-)
+        $catatan = $request->catatan ? $request->catatan : '-';
+
+        // Memeriksa apakah nomor kosong, jika ya, diisi dengan tanda strip (-)
+        $no = $request->no ? $request->no : '-';
+
         $penjualan = penjualan::create([
             'produk_id' => $request->produk_id, // Menyimpan produk_id yang dikirim melalui request
-            'no' => $request->no,               // Menyimpan no penjualan yang dikirim melalui request
+            'no' => $no,               // Menyimpan no penjualan yang dikirim melalui request
             'jumlah' => $jumlah,                // Menyimpan jumlah penjualan yang telah diproses sebelumnya
             'total' => $total,                  // Menyimpan total harga penjualan yang telah dihitung sebelumnya
             'metode_pembayaran' => $request->metode_pembayaran,               // Menyimpan metode_pembayaran penjualan yang dikirim melalui request
             'tanggal' => $request->tanggal,     // Menyimpan tanggal penjualan yang dikirim melalui request
             'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
-            'catatan' => $request->catatan               // Menyimpan catatan penjualan yang dikirim melalui request
+            'catatan' => $catatan               // Menyimpan catatan penjualan yang dikirim melalui request
         ]);
 
         // Mengarahkan kembali ke route 'penjualan' dengan pesan sukses
-        return redirect()->route('penjualan')->with('toast_success', 'Transaksi berhasil ditambahkan');
+        Alert::toast('Transaksi pembelian berhasil ditambahkan!','success');
+        return redirect()->route('penjualan');
     }
 
     public function edit($id)
@@ -102,7 +112,7 @@ class PenjualanController extends Controller
         return view('penjualan.update', compact('produk','penjualan', 'user'));
     }
 
-    public function update(UpdatepenjualanRequest $request, $id)
+    public function update(Request $request, $id)
     {
         // Mengambil data penjualan berdasarkan ID yang diberikan.
         $penjualan = penjualan::findOrFail($id);
@@ -119,7 +129,9 @@ class PenjualanController extends Controller
 
         // Cek stok produk sebelum melakukan penjualan
         if ($selectedProduct->stok < $jumlah) {
-            return redirect()->back()->with('toast_error', 'Stok produk tidak mencukupi untuk transaksi ini')->withInput();
+            Alert::toast('Stok produk tidak mencukupi untuk transaksi ini!','error');
+            return redirect()->back()->withInput();
+            // return redirect()->back()->with('toast_error', 'Stok produk tidak mencukupi untuk transaksi ini')->withInput();
         }
 
          // Hitung total berdasarkan kategori produk
@@ -151,7 +163,8 @@ class PenjualanController extends Controller
         ]);
 
         // Mengarahkan kembali ke route 'penjualan' dengan pesan sukses
-        return redirect()->route('penjualan')->with('toast_success', 'Transaksi berhasil diperbarui');
+        Alert::toast('Transaksi pembelian berhasil diperbarui!','success');
+        return redirect()->route('penjualan');
     }
 
     public function destroy($id)
@@ -175,7 +188,8 @@ class PenjualanController extends Controller
         }
 
         // Mengarahkan ke route 'penjualan' dengan pesan sukses
-        return redirect()->route('penjualan')->with('toast_success', 'Transaksi berhasil dihapus.');
+        Alert::toast('Transaksi pembelian berhasil dihapus!','success');
+        return redirect()->route('penjualan');
     }
 
     public function detail($id)

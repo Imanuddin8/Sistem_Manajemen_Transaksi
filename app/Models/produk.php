@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Http\Controllers\Models\pembelian;
-use Http\Controllers\Models\penjualan;
+use App\Models\penjualan;
+use App\Models\pembelian;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class produk extends Model
