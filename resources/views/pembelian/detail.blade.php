@@ -54,8 +54,8 @@
                 <tr>
                     <td>Pembuat</td>
                     <td>
-                        : {{$pembelian->user->username}}
-                        <input type="hidden" name="produk_id" id="produk_id" value="{{$pembelian->user_id}}">
+                        : <td>{{ $row->user->username ?? 'User tidak ada' }}</td>
+                        <input type="hidden" name="user_id" id="user_id" value="{{$pembelian->user_id}}">
                     </td>
                 </tr>
                 <tr>

@@ -38,51 +38,54 @@ class PembelianController extends Controller
         return view('pembelian.create', compact('produk', 'pembelian', 'user'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorepembelianRequest $request)
+    public function store(Request $request)
     {
         // Mengambil semua data produk dan user dari database
         $user = User::all();
-        $produk = produk::all();
+        $produk = Produk::all();
 
         // Hapus titik ribuan dari input jumlah
-        $jumlah = str_replace('.', '', $request->jumlah);
-
-        // Ambil produk berdasarkan produk_id dari request
-        $selectedProduct = produk::find($request->produk_id);
-
-        // Hitung total berdasarkan kategori produk
-        if ($selectedProduct->kategori == 'saldo') {
-            $total = $jumlah + $selectedProduct->harga_beli;
-            // Tambah stok untuk semua produk dengan kategori 'saldo'
-            produk::where('kategori', 'saldo')->increment('stok', $jumlah);
-        } else {
-            $total = $jumlah * $selectedProduct->harga_beli;
-            // Tambah stok untuk produk yang bukan kategori 'saldo'
-            $selectedProduct->increment('stok', $jumlah);
-        }
-
-        // Memeriksa apakah catatan kosong, jika ya, diisi dengan tanda strip (-)
+        $produk_ids = $request->produk_id;
+        $jumlahs = $request->jumlah;
+        $metode_pembayaran = $request->metode_pembayaran;
+        $tanggal = $request->tanggal;
         $catatan = $request->catatan ? $request->catatan : '-';
 
-        // Simpan perubahan stok produk
-        $selectedProduct->save();
+        foreach ($produk_ids as $index => $produk_id) {
+            // Hapus titik ribuan dari input jumlah
+            $jumlah = str_replace('.', '', $jumlahs[$index]);
 
-        // Membuat data pembelian baru di database dengan menggunakan model pembelian
-        $pembelian = pembelian::create([
-            'produk_id' => $request->produk_id,  // Menyimpan produk_id yang dikirim melalui request
-            'jumlah' => $jumlah,                // Menyimpan jumlah pembelian yang telah diproses sebelumnya
-            'total' => $total,                  // Menyimpan total harga pembelian yang telah dihitung sebelumnya
-            'metode_pembayaran' => $request->metode_pembayaran,  // Menyimpan metode_pembayaran yang dikirim melalui request
-            'tanggal' => $request->tanggal,     // Menyimpan tanggal pembelian yang dikirim melalui request
-            'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
-            'catatan' => $catatan  // Menyimpan catatan yang dikirim melalui request
-        ]);
+            // Ambil produk berdasarkan produk_id dari request
+            $selectedProduct = Produk::find($produk_id);
+
+            // Hitung total berdasarkan kategori produk
+            if ($selectedProduct->kategori == 'saldo') {
+                $total = $jumlah + $selectedProduct->harga_beli;
+                // Tambah stok untuk semua produk dengan kategori 'saldo'
+                Produk::where('kategori', 'saldo')->increment('stok', $jumlah);
+            } else {
+                $total = $jumlah * $selectedProduct->harga_beli;
+                // Tambah stok untuk produk yang bukan kategori 'saldo'
+                $selectedProduct->increment('stok', $jumlah);
+            }
+
+            // Simpan perubahan stok produk
+            $selectedProduct->save();
+
+            // Membuat data pembelian baru di database dengan menggunakan model pembelian
+            Pembelian::create([
+                'produk_id' => $produk_id,  // Menyimpan produk_id yang dikirim melalui request
+                'jumlah' => $jumlah,                // Menyimpan jumlah pembelian yang telah diproses sebelumnya
+                'total' => $total,                  // Menyimpan total harga pembelian yang telah dihitung sebelumnya
+                'metode_pembayaran' => $metode_pembayaran,  // Menyimpan metode_pembayaran yang dikirim melalui request
+                'tanggal' => $tanggal,     // Menyimpan tanggal pembelian yang dikirim melalui request
+                'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
+                'catatan' => $catatan  // Menyimpan catatan yang dikirim melalui request
+            ]);
+        }
 
         // Mengarahkan kembali ke route 'pembelian' dengan pesan sukses
-        Alert::toast('Transaksi pembelian berhasil ditambahkan!','success');
+        Alert::toast('Transaksi pembelian berhasil ditambahkan!', 'success');
         return redirect()->route('pembelian');
     }
 

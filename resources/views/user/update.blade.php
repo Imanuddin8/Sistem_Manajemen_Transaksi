@@ -34,7 +34,7 @@
                                 <div class="mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Password</label>
                                     <input name="password" id="password" type="text" class="form-control" placeholder="Password user" />
-                                    <small class="form-text text-red text-muted">Biarkan kosong jika password tidak ingin diubah.</small>
+                                    <small class="form-text text-muted">Biarkan kosong jika password tidak ingin diubah.</small>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleFormControlSelect1" class="form-label">Posisi</label>

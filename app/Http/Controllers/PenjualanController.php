@@ -48,54 +48,63 @@ class PenjualanController extends Controller
     {
         // Mengambil semua data produk dan user dari database
         $user = User::all();
-        $produk = produk::all();
-
-        // Hapus titik ribuan dari input jumlah
-        $jumlah = str_replace('.', '', $request->jumlah);
+        $produk = Produk::all();
 
         // Ambil produk berdasarkan produk_id dari request
-        $selectedProduct = produk::find($request->produk_id);
+        $produkIds = $request->produk_id; // Mengambil array produk_id
+        $jumlahs = $request->jumlah; // Mengambil array jumlah produk
 
-        // Cek stok produk sebelum melakukan penjualan
-        if ($selectedProduct->stok < $jumlah) {
-            Alert::toast('Stok produk tidak mencukupi untuk transaksi ini!','error');
+        // Validasi panjang array produk_id dan jumlah
+        if (count($produkIds) !== count($jumlahs)) {
+            Alert::toast('Data produk dan jumlah tidak sesuai!', 'error');
             return redirect()->back()->withInput();
-            // return redirect()->back()->with('toast_error', 'Stok produk tidak mencukupi untuk transaksi ini')->withInput();
         }
 
-         // Hitung total berdasarkan kategori produk
-        if ($selectedProduct->kategori == 'saldo') {
-            $total = $jumlah + $selectedProduct->harga_jual;
-            // Kurangi stok untuk semua produk dengan kategori 'saldo'
-            produk::where('kategori', 'saldo')->decrement('stok', $jumlah);
-        } else {
-            $total = $jumlah * $selectedProduct->harga_jual;
-            // Kurangi stok untuk produk yang bukan kategori 'saldo'
-            $selectedProduct->decrement('stok', $jumlah);
+        // Proses setiap produk
+        foreach ($produkIds as $index => $produkId) {
+            $jumlah = str_replace('.', '', $jumlahs[$index]); // Hapus titik ribuan dari input jumlah
+            $selectedProduct = Produk::find($produkId);
+
+            // Cek stok produk sebelum melakukan penjualan
+            if ($selectedProduct->stok < $jumlah) {
+                Alert::toast("Stok produk {$selectedProduct->nama_produk} tidak mencukupi untuk transaksi ini!", 'error');
+                return redirect()->back()->withInput();
+            }
+
+            // Hitung total berdasarkan kategori produk
+            if ($selectedProduct->kategori == 'saldo') {
+                $total = $jumlah + $selectedProduct->harga_jual;
+                // Kurangi stok untuk semua produk dengan kategori 'saldo'
+                Produk::where('kategori', 'saldo')->decrement('stok', $jumlah);
+            } else {
+                $total = $jumlah * $selectedProduct->harga_jual;
+                // Kurangi stok untuk produk yang bukan kategori 'saldo'
+                $selectedProduct->decrement('stok', $jumlah);
+            }
+
+            // Simpan perubahan stok produk
+            $selectedProduct->save();
+
+            // Memeriksa apakah catatan kosong, jika ya, diisi dengan tanda strip (-)
+            $catatan = $request->catatan ? $request->catatan : '-';
+
+            // Memeriksa apakah nomor kosong, jika ya, diisi dengan tanda strip (-)
+            $no = $request->no ? $request->no : '-';
+
+            // Simpan data penjualan
+            Penjualan::create([
+                'produk_id' => $produkId,
+                'jumlah' => $jumlah,
+                'total' => $total,
+                'no' => $no,
+                'metode_pembayaran' => $request->metode_pembayaran,
+                'tanggal' => $request->tanggal,
+                'user_id' => Auth::id(),
+                'catatan' => $catatan,
+            ]);
         }
 
-        // Simpan perubahan stok produk
-        $selectedProduct->save();
-
-        // Memeriksa apakah catatan kosong, jika ya, diisi dengan tanda strip (-)
-        $catatan = $request->catatan ? $request->catatan : '-';
-
-        // Memeriksa apakah nomor kosong, jika ya, diisi dengan tanda strip (-)
-        $no = $request->no ? $request->no : '-';
-
-        $penjualan = penjualan::create([
-            'produk_id' => $request->produk_id, // Menyimpan produk_id yang dikirim melalui request
-            'no' => $no,               // Menyimpan no penjualan yang dikirim melalui request
-            'jumlah' => $jumlah,                // Menyimpan jumlah penjualan yang telah diproses sebelumnya
-            'total' => $total,                  // Menyimpan total harga penjualan yang telah dihitung sebelumnya
-            'metode_pembayaran' => $request->metode_pembayaran,               // Menyimpan metode_pembayaran penjualan yang dikirim melalui request
-            'tanggal' => $request->tanggal,     // Menyimpan tanggal penjualan yang dikirim melalui request
-            'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
-            'catatan' => $catatan               // Menyimpan catatan penjualan yang dikirim melalui request
-        ]);
-
-        // Mengarahkan kembali ke route 'penjualan' dengan pesan sukses
-        Alert::toast('Transaksi pembelian berhasil ditambahkan!','success');
+        Alert::toast('Transaksi penjualan berhasil ditambahkan!', 'success');
         return redirect()->route('penjualan');
     }
 

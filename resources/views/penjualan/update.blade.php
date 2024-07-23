@@ -64,7 +64,7 @@
                                 <div class="mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Catatan</label>
                                     <textarea title="catatan" name="catatan" id="catatan" class="form-control" id="exampleFormControlTextarea1" rows="3">{{$penjualan->catatan}}</textarea>
-                                    <small class="form-text text-red text-muted">Jika tidak ada catatan, isi catatan dengan simbol '-' (strip).</small>
+                                    <small class="form-text text-muted">Jika tidak ada catatan, isi catatan dengan simbol '-' (strip).</small>
                                 </div>
                                 <div class="d-flex justify-content-end align-items-center gap-2">
                                     <div class="mr-4">

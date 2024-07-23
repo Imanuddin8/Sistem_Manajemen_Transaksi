@@ -60,8 +60,8 @@
                 <tr>
                     <td>Pembuat</td>
                     <td>
-                        : {{$penjualan->user->username}}
-                        <input type="hidden" name="produk_id" id="produk_id" value="{{$penjualan->user_id}}">
+                        : {{$penjualan->user->username ?? 'User tidak ada'}}
+                        <input type="hidden" name="user_id" id="user_id" value="{{$penjualan->user_id}}">
                     </td>
                 </tr>
                 <tr>
