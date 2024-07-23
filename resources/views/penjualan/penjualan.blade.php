@@ -28,7 +28,7 @@
                     </a>
                 </div>
                 <div class="col-auto">
-                    <a type="button" class="btn btn-info btn-md" href="{{ route('penjualan.cetak', request()->query()) }}" role="button">
+                    <a target="_blank" type="button" class="btn btn-info btn-md" href="{{ route('penjualan.cetak', request()->query()) }}" role="button">
                         <i class="fa fa-print"></i> Cetak
                     </a>
                 </div>
