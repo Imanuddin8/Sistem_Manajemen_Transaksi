@@ -46,7 +46,7 @@
                                     <div class="col-12 col-lg-6">
                                         <label for="exampleFormControlInput1" class="form-label">Nomor</label>
                                         <input value="{{$penjualan->no}}" name="no" id="no" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nomor" required/>
-                                        <small class="form-text text-red text-muted">Jika tidak ada nomor isi dengan simbol '-' (strip).</small>
+                                        <small class="form-text text-muted">Jika tidak ada nomor isi dengan simbol '-' (strip).</small>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <label for="exampleFormControlSelect1" class="form-label">Metode Pembayaran</label>

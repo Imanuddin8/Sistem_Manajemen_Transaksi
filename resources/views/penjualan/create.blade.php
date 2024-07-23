@@ -55,7 +55,7 @@
                                 <div class="col-12 col-lg-6">
                                     <label for="no" class="form-label">Nomor</label>
                                     <input title="nomor" name="no" id="no" type="text" class="form-control" placeholder="Nomor" value="{{ old('no') }}">
-                                    <small class="form-text text-red text-muted">Kosongi jika tidak ada nomor.</small>
+                                    <small class="form-text text-muted">Kosongi jika tidak ada nomor.</small>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <label for="metode_pembayaran" class="form-label">Metode Pembayaran</label>
