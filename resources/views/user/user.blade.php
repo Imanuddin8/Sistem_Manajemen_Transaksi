@@ -46,10 +46,10 @@
                         <a href="{{route('user.edit', ['id' => $row->id])}}" type="button" class="btn btn-icon btn-warning mr-1" name="edit">
                           <i class="fa fa-edit text-white"></i>
                         </a>
-                        <form action="{{ route('user.destroy', $row->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('user.destroy', $row->id) }}" method="POST" class="delete-form">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-icon btn-danger" type="submit" onclick="return confirm('Apakah anda yakin akan Menghapus?');">
+                            <button  id="hapus" class="btn btn-icon btn-danger" type="button" data-id="{{ $row->id }}">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
                         </form>
@@ -64,8 +64,30 @@
       </div>
     </div>
   </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteButtons = document.querySelectorAll('#hapus');
 
-  @include('sweetalert::alert')
-
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const form = this.closest('.delete-form');
+                    Swal.fire({
+                        title: 'Hapus user!',
+                        text: "Apakah anda yakin ingin menghapus user?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Iya, Hapus user!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    })
+                });
+            });
+        });
+    </script>
 </section>
 @endsection

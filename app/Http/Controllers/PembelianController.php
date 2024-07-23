@@ -55,7 +55,7 @@ class PembelianController extends Controller
 
         // Hitung total berdasarkan kategori produk
         if ($selectedProduct->kategori == 'saldo') {
-            $total = $jumlah;
+            $total = $jumlah + $selectedProduct->harga_beli;
             // Tambah stok untuk semua produk dengan kategori 'saldo'
             produk::where('kategori', 'saldo')->increment('stok', $jumlah);
         } else {

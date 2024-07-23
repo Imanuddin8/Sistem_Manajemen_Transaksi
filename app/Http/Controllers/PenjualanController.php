@@ -65,7 +65,7 @@ class PenjualanController extends Controller
 
          // Hitung total berdasarkan kategori produk
         if ($selectedProduct->kategori == 'saldo') {
-            $total = $jumlah + 2000;
+            $total = $jumlah + $selectedProduct->harga_jual;
             // Kurangi stok untuk semua produk dengan kategori 'saldo'
             produk::where('kategori', 'saldo')->decrement('stok', $jumlah);
         } else {

@@ -64,7 +64,7 @@
                         @if(request('tanggal_mulai'))
                             <div class="col-auto">
                                 <a href="{{ route('pembelian') }}" class="btn btn-icon btn-success">
-                                    <i class="fa fa-arrows-rotate"></i>
+                                    <i class="fa fa-arrows-rotate text-white"></i>
                                 </a>
                             </div>
                         @endif
@@ -96,10 +96,17 @@
                                 <a href="{{route('pembelian.edit', ['id' => $row->id])}}" type="button" class="btn btn-icon btn-warning mr-2" name="edit">
                                     <i class="fa fa-edit text-white" aria-hidden="true"></i>
                                 </a>
-                                <form action="{{ route('pembelian.destroy', $row->id) }}" method="POST" style="display:inline;">
+                                {{-- <form action="{{ route('pembelian.destroy', $row->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-icon btn-danger mr-2" type="submit" onclick="return confirm('Apakah anda yakin akan Menghapus?');">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </form> --}}
+                                <form action="{{ route('pembelian.destroy', $row->id) }}" method="POST" class="delete-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button  id="hapus" class="btn btn-icon btn-danger mr-2" type="button" data-id="{{ $row->id }}">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </form>
@@ -117,9 +124,32 @@
   </div>
 </div>
 
-
-
 </section>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('#hapus');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const form = this.closest('.delete-form');
+                Swal.fire({
+                    title: 'Hapus transaksi pembelian!',
+                    text: "Apakah anda yakin ingin menghapus transaksi pembelian?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Iya, Hapus transaksi!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                })
+            });
+        });
+    });
+</script>
 
 @endsection

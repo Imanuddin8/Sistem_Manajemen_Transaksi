@@ -79,15 +79,44 @@
         </nav>
         <!-- /.sidebar-menu -->
         <div class="mt-3 d-flex justify-content-center">
-            <form id="logout-form" action="{{ url('/logout') }}" method="POST"
-                onsubmit="return confirm('Apakah Anda yakin ingin Logout?')">
+            {{-- <form action="{{ url('/logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-danger btn-md px-5" onclick="confirmLogout()">
+                <button type="button" id="logout" class="btn btn-danger btn-md px-5">
+                    <i class="nav-icon fas fa-sign-out-alt" style="color: white;"></i>
+                    <span class="align-middle ml-1">Logout</span>
+                </button>
+            </form> --}}
+            <form action="{{ url('/logout') }}" method="POST" id="logout-form">
+                @csrf
+                <button type="button" id="logout-button" class="btn btn-danger btn-md px-5">
                     <i class="nav-icon fas fa-sign-out-alt" style="color: white;"></i>
                     <span class="align-middle ml-1">Logout</span>
                 </button>
             </form>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const logoutButton = document.getElementById('logout-button');
+            const logoutForm = document.getElementById('logout-form');
+
+            logoutButton.addEventListener('click', function () {
+                Swal.fire({
+                    title: 'Logout!',
+                    text: "Apakah anda yakin ingin logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Iya, Logout!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        logoutForm.submit();
+                    }
+                })
+            });
+        });
+    </script>
     <!-- /.sidebar -->
 </aside>

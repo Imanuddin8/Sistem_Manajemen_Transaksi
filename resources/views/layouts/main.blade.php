@@ -39,6 +39,9 @@
   {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />|
+  <!-- Tambahkan ini di dalam <head> atau sebelum </body> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   @yield('link')
 
   <style>
@@ -80,6 +83,8 @@
 <!-- ./wrapper -->
 
 @yield('script')
+<!-- Tambahkan ini di dalam <head> atau sebelum </body> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->

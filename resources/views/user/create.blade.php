@@ -38,7 +38,7 @@
                                   <div class="mb-3">
                                     <label for="exampleFormControlSelect1" class="form-label">Posisi</label>
                                       <select title="posisi user" name="role" id="role" class="form-control" id="exampleFormControlSelect1" aria-label="Default select example" required>
-                                          <option selected>Piih posisi user</option>
+                                          <option selected disabled>Piih posisi user</option>
                                           <option value="admin">Admin</option>
                                           <option value="karyawan">karyawan</option>
                                       </select>

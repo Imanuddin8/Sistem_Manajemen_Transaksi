@@ -93,8 +93,6 @@
   </div>
 </div>
 
-@include('sweetalert::alert')
-
 </section>
 
 
