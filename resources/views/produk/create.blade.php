@@ -36,7 +36,7 @@
                                 <div class="mb-3">
                                   <label for="exampleFormControlSelect1" class="form-label">Kategori</label>
                                   <select title="kategori produk" id="kategori" name="kategori" class="form-control" id="exampleFormControlSelect1" aria-label="Default select example" required>
-                                    <option selected>Piih kategori produk</option>
+                                    <option selected disabled>Piih kategori produk</option>
                                     <option value="kartu">Kartu</option>
                                     <option value="saldo">Saldo</option>
                                     <option value="vocher">Vocher</option>
