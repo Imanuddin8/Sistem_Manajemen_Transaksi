@@ -50,13 +50,17 @@ class PenjualanController extends Controller
         $user = User::all();
         $produk = Produk::all();
 
-        // Ambil produk berdasarkan produk_id dari request
-        $produkIds = $request->produk_id; // Mengambil array produk_id
-        $jumlahs = $request->jumlah; // Mengambil array jumlah produk
+        // Ambil data dari request
+        $produkIds = $request->produk_id;
+        $jumlahs = $request->jumlah;
+        $noList = $request->no;
+        $metode_pembayaran = $request->metode_pembayaran;
+        $tanggal = $request->tanggal;
+        $catatan = $request->catatan ? $request->catatan : '-';
 
         // Validasi panjang array produk_id dan jumlah
-        if (count($produkIds) !== count($jumlahs)) {
-            Alert::toast('Data produk dan jumlah tidak sesuai!', 'error');
+        if (count($produkIds) !== count($jumlahs) || count($produkIds) !== count($noList)) {
+            Alert::toast('Data produk, jumlah dan no tidak sesuai!', 'error');
             return redirect()->back()->withInput();
         }
 
@@ -89,7 +93,7 @@ class PenjualanController extends Controller
             $catatan = $request->catatan ? $request->catatan : '-';
 
             // Memeriksa apakah nomor kosong, jika ya, diisi dengan tanda strip (-)
-            $no = $request->no ? $request->no : '-';
+            $no = $noList[$index] ?? '-';
 
             // Simpan data penjualan
             Penjualan::create([

@@ -18,10 +18,6 @@ class ProdukController extends Controller
         // Mengambil semua data produk dan mengurutkannya berdasarkan waktu pembuatan secara descending (terbaru ke terlama)
         $produk = produk::orderBy('created_at', 'desc')->get();
 
-        // $title = 'Delete Produk!';
-        // $text = "Anda yakin ingin menhapusnya?";
-        // confirmDelete($title, $text);
-
         // Mengembalikan view 'produk.produk' dengan data produk yang telah diambil
         return view('produk.produk', compact('produk'));
     }

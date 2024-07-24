@@ -44,7 +44,7 @@ class PembelianController extends Controller
         $user = User::all();
         $produk = Produk::all();
 
-        // Hapus titik ribuan dari input jumlah
+        // mengambil data dari request
         $produk_ids = $request->produk_id;
         $jumlahs = $request->jumlah;
         $metode_pembayaran = $request->metode_pembayaran;
