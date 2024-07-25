@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row mb-2 justify-content-center">
             <div class="col-12 col-md-8 col-lg-6 text-center">
-                <h1>Tambah Transaksi Penjualan</h1>
+                <h1>Tambah Transaksi Pembelian</h1>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -18,7 +18,7 @@
             <div class="col-12 col-lg-8">
                 <div class="card">
                     <div class="card-header">
-                        <form id="form" action="{{ route('penjualan.store') }}" method="post" enctype="multipart/form-data">
+                        <form id="form" action="{{ route('pembelian.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row justify-content-center align-items-center g-3 mb-3" id="produk-rows">
                                 <div class="col-12">
@@ -29,7 +29,7 @@
                                 <!-- Baris produk default -->
                                 @foreach(old('produk_id', [null]) as $index => $old_produk_id)
                                 <div class="row ms-0 g-2 produk-row">
-                                    <div class="col-6 col-lg-4">
+                                    <div class="col-6 col-lg-7">
                                         <label for="exampleFormControlSelect1" class="form-label">Nama Produk</label>
                                         <select title="nama produk" name="produk_id[]" class="form-control" aria-label="Default select example" required>
                                             @foreach($produk as $item)
@@ -39,14 +39,9 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-4 col-lg-3">
+                                    <div class="col-4 col-lg-4">
                                         <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
                                         <input name="jumlah[]" type="text" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.' . $index) }}" required/>
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <label for="no" class="form-label">Nomor</label>
-                                        <input title="nomor" name="no[]" id="no" type="text" class="form-control" placeholder="Nomor" value="{{ old('no.' . $index) }}">
-                                        <small class="form-text text-muted">Kosongi jika tidak ada nomor.</small>
                                     </div>
                                     <div class="col-2 col-lg-1 d-flex align-items-start" style="margin-top: 2.4rem;">
                                         <button type="button" class="btn btn-danger remove-row">
@@ -104,7 +99,7 @@
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'ms-0', 'g-2', 'produk-row');
             newRow.innerHTML = `
-                <div class="col-6 col-lg-4">
+                <div class="col-6 col-lg-7">
                     <label class="form-label">Nama Produk</label>
                     <select title="nama produk" name="produk_id[]" class="form-control" aria-label="Default select example" required>
                         @foreach($produk as $item)
@@ -115,15 +110,9 @@
                     </select>
                 </div>
 
-                <div class="col-4 col-lg-3">
+                <div class="col-4 col-lg-4">
                     <label class="form-label">Jumlah</label>
                     <input name="jumlah[]" type="text" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.${index}') }}" required/>
-                </div>
-
-                <div class="col-12 col-lg-4">
-                    <label for="no" class="form-label">Nomor</label>
-                    <input title="nomor" name="no[]" type="text" class="form-control" placeholder="Nomor" value="{{ old('no.${index}') }}">
-                    <small class="form-text text-muted">Kosongi jika tidak ada nomor.</small>
                 </div>
 
                 <div class="col-2 col-lg-1 d-flex align-items-start" style="margin-top: 2.2rem;">
