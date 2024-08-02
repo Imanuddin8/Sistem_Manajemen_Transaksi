@@ -20,7 +20,7 @@
     <section class="content">
         <div class="container-fluid">
             <div
-                class="row justify-content-center align-items-center"
+                class="row justify-content-start align-items-center"
             >
                 <div class="col-lg-3 col-md-6">
                     <div class="small-box bg-primary p-1">
@@ -110,6 +110,91 @@
                     </div>
                 @endif
             </div>
+            <div class="mb-3" style="width: 100%;">
+                <canvas id="profitChart"></canvas>
+            </div>
+            <div style="width: 100%;">
+                <canvas id="profitChartT"></canvas>
+            </div>
+
+            <script>
+                // Grafik Keuntungan
+                const ctxProfit = document.getElementById('profitChart').getContext('2d');
+                const profitData = @json($dataP);
+                const year = {{ \Carbon\Carbon::now()->year }}; // Mengambil tahun saat ini
+
+                new Chart(ctxProfit, {
+                    type: 'line',
+                    data: {
+                        labels: [
+                            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                        ],
+                        datasets: [{
+                            label: 'Keuntungan ' + year, // Label dataset dengan tahun
+                            data: Object.values(profitData),
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Grafik Keuntungan Tahun ' + year // Judul grafik dengan tahun
+                            }
+                        }
+                    }
+                });
+
+                // Grafik Penjualan
+                const ctxPenjualan = document.getElementById('profitChartT').getContext('2d');
+                const penjualanData = @json($data);
+
+                new Chart(ctxPenjualan, {
+                    type: 'line',
+                    data: {
+                        labels: [
+                            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                        ],
+                        datasets: [{
+                            label: 'Penjualan ' + year, // Label dataset dengan tahun
+                            data: Object.values(penjualanData),
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Grafik Penjualan Tahun ' + year // Judul grafik dengan tahun
+                            }
+                        }
+                    }
+                });
+            </script>
         </div>
     </section>
 @endsection

@@ -44,7 +44,42 @@ class DashboardController extends Controller
         // Menghitung total jumlah produk
         $jumlahProduk = $produk->count();
 
+        // Ambil data keuntungan per bulan
+        $profits = penjualan::selectRaw('SUM(keuntungan) as total, MONTH(tanggal) as month')
+            ->whereYear('tanggal', Carbon::now()->year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // Ambil jumlah transaksi per bulan
+        $transaksi = penjualan::selectRaw('COUNT(*) as total, MONTH(tanggal) as month')
+            ->whereYear('tanggal', Carbon::now()->year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // Inisialisasi array untuk setiap bulan
+        $dataP = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $dataP[$i] = 0; // Default 0 jika bulan tidak ada datanya
+        }
+
+        $data = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $data[$i] = 0; // Default 0 jika bulan tidak ada datanya
+        }
+
+        // Isi array dengan data dari database
+        foreach ($profits as $profit) {
+            $dataP[$profit->month] = $profit->total;
+        }
+
+        // Isi array dengan data dari database
+        foreach ($transaksi as $trk) {
+            $data[$trk->month] = $trk->total;
+        }
+
         // Mengembalikan view 'dashboard' dengan data yang telah dihitung
-        return view('dashboard', compact('saldoStok', 'totalSales', 'jumlahUser', 'jumlahProduk', 'data', 'totalKeuntungan'));
+        return view('dashboard', compact('dataP', 'data', 'saldoStok', 'totalSales', 'jumlahUser', 'jumlahProduk', 'data', 'totalKeuntungan'));
     }
 }
