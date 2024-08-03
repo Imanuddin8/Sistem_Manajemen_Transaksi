@@ -59,32 +59,7 @@ class DashboardController extends Controller
             $dataP[$profit->month] = $profit->total;
         }
 
-        // Ambil produk dengan jumlah penjualan terbanyak per bulan
-        $transaksi = penjualan::selectRaw('produk_id, COUNT(*) as total, MONTH(tanggal) as month')
-            ->whereYear('tanggal', Carbon::now()->year)
-            ->groupBy('month', 'produk_id')
-            ->orderBy('total', 'desc')
-            ->get()
-            ->groupBy('month')
-            ->map(function ($item) {
-                return $item->first(); // Ambil produk dengan penjualan terbanyak
-            });
-
-        $data = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $data[$i] = ['produk_id' => null, 'total' => 0]; // Default null jika bulan tidak ada datanya
-        }
-
-        // Isi array dengan data dari database
-        foreach ($transaksi as $month => $trk) {
-            $data[$month] = ['produk_id' => $trk->produk_id, 'total' => $trk->total];
-        }
-
-        // Mengambil nama produk berdasarkan produk_id
-        $productNames = produk::whereIn('id', array_column($data, 'produk_id'))
-            ->pluck('nama_produk', 'id');
-
         // Mengembalikan view 'dashboard' dengan data yang telah dihitung
-        return view('dashboard', compact('productNames', 'dataP', 'data', 'saldoStok', 'totalSales', 'jumlahUser', 'jumlahProduk', 'data', 'totalKeuntungan'));
+        return view('dashboard', compact('dataP', 'saldoStok', 'totalSales', 'jumlahUser', 'jumlahProduk', 'data', 'totalKeuntungan'));
     }
 }
