@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Mengambil semua data user dan produk
         $penjualan = penjualan::all();
@@ -35,9 +35,6 @@ class DashboardController extends Controller
 
         $totalKeuntungan = DB::table('penjualan')->whereDate('tanggal', $today)->sum('keuntungan');
 
-        // Memformat total ke dalam format Rupiah.
-        // $penjualan->formatted_total = formatRupiah($penjualan->keuntungan);
-
         // Menghitung total jumlah user
         $jumlahUser = $user->count();
 
@@ -51,22 +48,10 @@ class DashboardController extends Controller
             ->orderBy('month')
             ->get();
 
-        // Ambil jumlah transaksi per bulan
-        $transaksi = penjualan::selectRaw('COUNT(*) as total, MONTH(tanggal) as month')
-            ->whereYear('tanggal', Carbon::now()->year)
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
-
         // Inisialisasi array untuk setiap bulan
         $dataP = [];
         for ($i = 1; $i <= 12; $i++) {
             $dataP[$i] = 0; // Default 0 jika bulan tidak ada datanya
-        }
-
-        $data = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $data[$i] = 0; // Default 0 jika bulan tidak ada datanya
         }
 
         // Isi array dengan data dari database
@@ -74,12 +59,32 @@ class DashboardController extends Controller
             $dataP[$profit->month] = $profit->total;
         }
 
-        // Isi array dengan data dari database
-        foreach ($transaksi as $trk) {
-            $data[$trk->month] = $trk->total;
+        // Ambil produk dengan jumlah penjualan terbanyak per bulan
+        $transaksi = penjualan::selectRaw('produk_id, COUNT(*) as total, MONTH(tanggal) as month')
+            ->whereYear('tanggal', Carbon::now()->year)
+            ->groupBy('month', 'produk_id')
+            ->orderBy('total', 'desc')
+            ->get()
+            ->groupBy('month')
+            ->map(function ($item) {
+                return $item->first(); // Ambil produk dengan penjualan terbanyak
+            });
+
+        $data = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $data[$i] = ['produk_id' => null, 'total' => 0]; // Default null jika bulan tidak ada datanya
         }
 
+        // Isi array dengan data dari database
+        foreach ($transaksi as $month => $trk) {
+            $data[$month] = ['produk_id' => $trk->produk_id, 'total' => $trk->total];
+        }
+
+        // Mengambil nama produk berdasarkan produk_id
+        $productNames = produk::whereIn('id', array_column($data, 'produk_id'))
+            ->pluck('nama_produk', 'id');
+
         // Mengembalikan view 'dashboard' dengan data yang telah dihitung
-        return view('dashboard', compact('dataP', 'data', 'saldoStok', 'totalSales', 'jumlahUser', 'jumlahProduk', 'data', 'totalKeuntungan'));
+        return view('dashboard', compact('productNames', 'dataP', 'data', 'saldoStok', 'totalSales', 'jumlahUser', 'jumlahProduk', 'data', 'totalKeuntungan'));
     }
 }

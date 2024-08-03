@@ -41,8 +41,8 @@
                                     </div>
                                     <div class="col-4 col-lg-4">
                                         <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
-                                        <input name="jumlah[]" type="number" min="1" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.' . $index) }}" required oninvalid="this.setCustomValidity('Jumlah harus lebih dari 1')"
-                                        oninput="setCustomValidity('')"  />
+                                        <input name="jumlah[]" type="number" class="form-control" placeholder="Jumlah produk" value="{{ old('jumlah.' . $index) }}" required oninvalid="this.setCustomValidity('Jumlah harus lebih dari 1')"
+                                        oninput="setCustomValidity(''); formatNumber(this)" min="1"/>
                                         @error('jumlah')
                                             <div>{{$message}}</div>
                                         @enderror
@@ -75,7 +75,7 @@
                             </div>
                             <div class="d-flex justify-content-end align-items-center">
                                 <div class="mr-4">
-                                    <a class="btn btn-secondary" href="{{ route('penjualan') }}">Batal</a>
+                                    <a class="btn btn-secondary" href="{{ route('pembelian') }}">Batal</a>
                                 </div>
                                 <div>
                                     <button type="submit" name="create" class="btn btn-primary">Tambah</button>

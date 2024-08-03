@@ -46,8 +46,8 @@
                                     </div>
                                     <div class="col-5 col-lg-3">
                                         <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
-                                        <input name="jumlah[]" type="number" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.' . $index) }}" required oninvalid="this.setCustomValidity('Jumlah harus lebih dari 1')"
-                                        oninput="setCustomValidity('')" min="1"/>
+                                        <input name="jumlah[]" type="number" class="form-control" placeholder="Jumlah produk" value="{{ old('jumlah.' . $index) }}" required oninvalid="this.setCustomValidity('Jumlah harus lebih dari 1')"
+                                        oninput="setCustomValidity(''); formatNumber(this)" min="1"/>
                                     </div>
                                     <div class="col-5 col-lg-4">
                                         <label for="no" class="form-label">Nomor</label>

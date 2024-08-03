@@ -38,7 +38,7 @@ class PenjualanController extends Controller
     {
         // Mengambil semua data penjualan, produk, dan user dari database
         $penjualan = penjualan::all();
-        $produk = produk::all();
+        $produk = produk::where('nama_produk', '!=', 'saldo')->get();
         $user = User::all();
 
         // Mengembalikan view 'penjualan.create' dengan data produk, penjualan, dan user yang telah diambil
@@ -50,7 +50,7 @@ class PenjualanController extends Controller
         // Mengambil semua data produk dan user dari database
         $user = User::all();
         // Ambil semua produk kecuali yang namanya 'Saldo'
-        $produk = produk::where('nama_produk', '!=', 'saldo')->get();
+        $produk = produk::all();
 
         // Ambil data dari request
         $produkIds = $request->produk_id;
@@ -126,7 +126,7 @@ class PenjualanController extends Controller
 
         // Mengambil semua data produk dan user dari database.
         $user = User::all();
-        $produk = produk::all();
+        $produk = produk::where('nama_produk', '!=', 'saldo')->get();
 
         // Mengembalikan view 'penjualan.update' dengan variabel 'produk', 'penjualan', dan 'user'.
         return view('penjualan.update', compact('produk','penjualan', 'user'));

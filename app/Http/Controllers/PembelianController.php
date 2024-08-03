@@ -32,7 +32,14 @@ class PembelianController extends Controller
     {
         // Mengambil semua data pembelian, produk, dan user dari database
         $pembelian = pembelian::all();
-        $produk = produk::all();
+        $produk = produk::where(function($query) {
+            $query->where('kategori', 'saldo')
+                  ->where('nama_produk', 'like', '%saldo%');
+        })
+        ->orWhere(function($query) {
+            $query->where('kategori', '!=', 'saldo');
+        })
+        ->get();
         $user = User::all();
 
         // Mengembalikan view 'pembelian.create' dengan data produk, pembelian, dan user yang telah diambil
@@ -110,8 +117,16 @@ class PembelianController extends Controller
         $pembelian = pembelian::findOrFail($id);
 
         // Mengambil semua data produk dan user dari database.
-        $produk = produk::all();
         $user = User::all();
+
+        $produk = produk::where(function($query) {
+            $query->where('kategori', 'saldo')
+                  ->where('nama_produk', 'like', '%saldo%');
+        })
+        ->orWhere(function($query) {
+            $query->where('kategori', '!=', 'saldo');
+        })
+        ->get();
 
         // Hapus titik ribuan dari input jumlah
         $jumlah = str_replace('.', '', $request->jumlah);

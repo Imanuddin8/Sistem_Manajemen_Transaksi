@@ -81,14 +81,14 @@ class DatabaseSeeder extends Seeder
         DB::table('produks')->insert([
             'nama_produk' => 'pulsa',
             'harga_beli' => '0',
-            'harga_jual' => '0',
+            'harga_jual' => '2000',
             'kategori' => 'saldo',
             'stok' => '0',
         ]);
         DB::table('produks')->insert([
             'nama_produk' => 'token listrik',
             'harga_beli' => '0',
-            'harga_jual' => '0',
+            'harga_jual' => '2000',
             'kategori' => 'saldo',
             'stok' => '0',
         ]);

@@ -39,8 +39,8 @@
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
-                                        <input value="{{$penjualan->jumlah}}" name="jumlah" id="jumlah" class="form-control" id="exampleFormControlInput1" placeholder="Jumlah produk" oninput="formatNumber(this)" required type="number" oninvalid="this.setCustomValidity('Jumlah harus lebih dari 1')"
-                                        oninput="setCustomValidity('')" min="1"/>
+                                        <input value="{{$penjualan->jumlah}}" name="jumlah" id="jumlah" class="form-control" id="exampleFormControlInput1" placeholder="Jumlah produk" required type="number" oninvalid="this.setCustomValidity('Jumlah harus lebih dari 1')"
+                                        oninput="setCustomValidity(''); formatNumber(this)" min="1"/>
                                     </div>
                                 </div>
                                 <div
