@@ -31,7 +31,7 @@
                                 <div class="row ms-0 g-2 produk-row">
                                     <div class="col-6 col-lg-7">
                                         <label for="exampleFormControlSelect1" class="form-label">Nama Produk</label>
-                                        <select title="nama produk" name="produk_id[]" class="form-control" aria-label="Default select example" required>
+                                        <select title="nama produk" name="produk_id[]" id="produk" class="form-control select2" aria-label="Default select example" required>
                                             @foreach($produk as $item)
                                                 <option value="{{ $item->id }}" {{ $old_produk_id == $item->id ? 'selected' : '' }}>
                                                     {{ $item->nama_produk }}
@@ -105,7 +105,7 @@
             newRow.innerHTML = `
                 <div class="col-6 col-lg-7">
                     <label class="form-label">Nama Produk</label>
-                    <select title="nama produk" name="produk_id[]" class="form-control" aria-label="Default select example" required>
+                    <select title="nama produk" name="produk_id[]" id="produk" class="form-control select2" aria-label="Default select example" required>
                         @foreach($produk as $item)
                             <option value="{{ $item->id }}" {{ old('produk_id.${index}') == $item->id ? 'selected' : '' }}>
                                 {{ $item->nama_produk }}
@@ -116,7 +116,7 @@
 
                 <div class="col-4 col-lg-4">
                     <label class="form-label">Jumlah</label>
-                    <input name="jumlah[]" type="text" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.${index}') }}" required/>
+                    <input name="jumlah[]" type="number" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" min="1" value="{{ old('jumlah.${index}') }}" required />
                 </div>
 
                 <div class="col-2 col-lg-1 d-flex align-items-start" style="margin-top: 2.2rem;">

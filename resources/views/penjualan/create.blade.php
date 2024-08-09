@@ -121,12 +121,12 @@
 
             <div class="col-5 col-lg-3">
                 <label class="form-label">Jumlah</label>
-                <input name="jumlah[]" type="text" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.${index}') }}" required/>
+                <input min="1" name="jumlah[]" type="number" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.${index}') }}" required/>
             </div>
 
             <div class="col-5 col-lg-4">
                 <label for="no" class="form-label">Nomor</label>
-                <input title="nomor" name="no[]" type="text" class="form-control" placeholder="Nomor" value="{{ old('no.${index}') }}">
+                <input oninput="formatNo(this)" title="nomor" name="no[]" type="text" class="form-control" placeholder="Nomor" value="{{ old('no.${index}') }}">
                 <small class="form-text text-muted">Kosongi jika tidak ada nomor.</small>
             </div>
 

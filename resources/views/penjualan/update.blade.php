@@ -27,7 +27,7 @@
                                 >
                                     <div class="col-12 col-lg-6">
                                         <label for="exampleFormControlSelect1" class="form-label">Nama Produk</label>
-                                        <select name="produk_id" id="produk_id" class="form-control" id="exampleFormControlSelect1" aria-label="Default select example" required>
+                                        <select name="produk_id" id="produk" class="form-control select2" id="exampleFormControlSelect1" aria-label="Default select example" required>
                                             @foreach ($produk as $ct)
                                                 @if($ct->nama_produk !== 'saldo')
                                                     <option value="{{$ct->id}}" {{$penjualan->produk_id == $ct->id ? 'selected' : ''}} >
@@ -48,7 +48,7 @@
                                 >
                                     <div class="col-12 col-lg-6">
                                         <label for="exampleFormControlInput1" class="form-label">Nomor</label>
-                                        <input value="{{$penjualan->no}}" name="no" id="no" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nomor" required/>
+                                        <input oninput="formatNo(this)" value="{{$penjualan->no}}" name="no" id="no" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nomor" required/>
                                         <small class="form-text text-muted">Jika tidak ada nomor isi dengan simbol '-' (strip).</small>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -88,6 +88,10 @@
             <!-- /.row -->
         </div>
         <script>
+            function formatNo(input) {
+            let value = input.value.replace(/\D/g, '');
+            input.value = value;
+        }
             function formatNumber(input) {
                 // Hapus semua karakter non-digit
                 let value = input.value.replace(/\D/g, '');

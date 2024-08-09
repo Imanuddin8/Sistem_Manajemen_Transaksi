@@ -29,7 +29,7 @@
                                 >
                                     <div class="col-12 col-lg-6">
                                         <label for="exampleFormControlSelect1" class="form-label">Nama Produk</label>
-                                        <select name="produk_id" id="produk_id" class="form-control" id="exampleFormControlSelect1" aria-label="Default select example" required>
+                                        <select name="produk_id" id="produk" class="form-control select2" id="exampleFormControlSelect1" aria-label="Default select example" required>
                                             @foreach ($produk as $ct)
                                                 <option value="{{$ct->id}}" {{$pembelian->produk_id == $ct->id ? 'selected' : ''}} >
                                                 {{$ct->nama_produk}}
