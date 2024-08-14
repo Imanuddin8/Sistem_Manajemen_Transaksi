@@ -21,6 +21,12 @@
         <div class="card-body">
             <table class="mb-3">
                 <tr>
+                    <td>Nomor Struk</td>
+                    <td>
+                        : {{($penjualan->struk)}}
+                    </td>
+                </tr>
+                <tr>
                     <td>Nama Produk</td>
                     <td>
                         : {{$penjualan->produk->nama_produk}}
@@ -28,9 +34,21 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Harga</td>
+                    <td>
+                        : {{formatRupiah($penjualan->produk->harga_jual)}}
+                    </td>
+                </tr>
+                <tr>
                     <td>Jumlah</td>
                     <td>
                         : {{formatNumber($penjualan->jumlah)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>
+                        : {{formatRupiah($penjualan->total)}}
                     </td>
                 </tr>
                 <tr>
@@ -43,12 +61,6 @@
                     <td>Metode Pembayaran</td>
                     <td>
                         : {{$penjualan->metode_pembayaran}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Total</td>
-                    <td>
-                        : {{formatRupiah($penjualan->total)}}
                     </td>
                 </tr>
                 <tr>
