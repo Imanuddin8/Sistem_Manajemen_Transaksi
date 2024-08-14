@@ -75,6 +75,7 @@
             <thead class="text-center">
             <tr>
               <th>No</th>
+              <th>No Struk</th>
               <th>Nama Produk</th>
               <th>No</th>
               <th>Jumlah</th>
@@ -88,6 +89,7 @@
                 @foreach ($penjualan as $row)
                     <tr>
                         <td>{{$loop->iteration}}</td>
+                        <td>{{$row->struk}}</td>
                         <td>{{$row->produk->nama_produk}}</td>
                         <td>{{$row->no}}</td>
                         <td>{{number_format($row->jumlah, 0, ',', '.')}}</td>

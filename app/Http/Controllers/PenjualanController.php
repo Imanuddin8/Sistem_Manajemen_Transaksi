@@ -68,6 +68,7 @@ class PenjualanController extends Controller
 
         // Proses setiap produk
         foreach ($produkIds as $index => $produkId) {
+            $nomorStruk = $this->generateNomorStruk();
             $jumlah = str_replace('.', '', $jumlahs[$index]); // Hapus titik ribuan dari input jumlah
             $selectedProduct = Produk::find($produkId);
 
@@ -108,6 +109,7 @@ class PenjualanController extends Controller
                 'total' => $total,
                 'keuntungan' => $keuntungan,
                 'no' => $no,
+                'struk' => $nomorStruk,
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'tanggal' => Carbon::now(),
                 'user_id' => Auth::id(),
@@ -117,6 +119,16 @@ class PenjualanController extends Controller
 
         Alert::toast('Transaksi penjualan berhasil ditambahkan!', 'success');
         return redirect()->route('penjualan');
+    }
+
+    private function generateNomorStruk()
+    {
+        // Format: TRX-YYYYMMDD-XXXX
+        $tanggal = now()->format('Ymd');
+        $terakhir = Penjualan::whereDate('created_at', today())->max('id');
+        $nomorUrut = str_pad(($terakhir + 1), 4, '0', STR_PAD_LEFT);
+
+        return 'TRK-' . $tanggal . '-' . $nomorUrut;
     }
 
     public function edit($id)
