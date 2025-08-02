@@ -41,7 +41,11 @@
                                     </div>
                                     <div class="col-4 col-lg-4">
                                         <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
-                                        <input name="jumlah[]" type="text" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.' . $index) }}" required/>
+                                        <input name="jumlah[]" type="number" min="1" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.' . $index) }}" required oninvalid="this.setCustomValidity('Jumlah harus lebih dari 1')"
+                                        oninput="setCustomValidity('')"  />
+                                        @error('jumlah')
+                                            <div>{{$message}}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-2 col-lg-1 d-flex align-items-start" style="margin-top: 2.4rem;">
                                         <button type="button" class="btn btn-danger remove-row">
@@ -51,7 +55,7 @@
                                 </div>
                                 @endforeach
                             </div>
-                            <div class="row g-3 mb-3">
+                            <div class="row">
                                 <div class="col-12 col-lg-6">
                                     <label for="metode_pembayaran" class="form-label">Metode Pembayaran</label>
                                     <select title="metode pembayaran" name="metode_pembayaran" id="metode_pembayaran" class="form-control" aria-label="Default select example" required>
@@ -60,8 +64,8 @@
                                     </select>
                                 </div>
                                 <div class="col-12 col-lg-6">
-                                    <label for="tanggal" class="form-label">Tanggal</label>
-                                    <input title="tanggal transaksi" name="tanggal" id="tanggal" type="datetime-local" class="form-control" required value="{{ old('tanggal') }}">
+                                    <label for="exampleFormControlInput1" class="form-label">Tanggal</label>
+                                    <input name="tanggal" type="datetime-local" class="form-control" id="exampleFormControlInput1" required/>
                                 </div>
                             </div>
                             <div class="mb-3">

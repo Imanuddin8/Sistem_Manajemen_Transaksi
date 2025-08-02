@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 use Alert;
+use Carbon\Carbon;
 
 class PembelianController extends Controller
 {
@@ -78,7 +79,7 @@ class PembelianController extends Controller
                 'jumlah' => $jumlah,                // Menyimpan jumlah pembelian yang telah diproses sebelumnya
                 'total' => $total,                  // Menyimpan total harga pembelian yang telah dihitung sebelumnya
                 'metode_pembayaran' => $metode_pembayaran,  // Menyimpan metode_pembayaran yang dikirim melalui request
-                'tanggal' => $tanggal,     // Menyimpan tanggal pembelian yang dikirim melalui request
+                'tanggal' => $request->tanggal,     // Menyimpan tanggal pembelian yang dikirim melalui request
                 'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
                 'catatan' => $catatan  // Menyimpan catatan yang dikirim melalui request
             ]);

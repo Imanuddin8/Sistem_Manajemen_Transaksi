@@ -18,6 +18,7 @@ return new class extends Migration {
         $table->string('no');
         $table->integer('jumlah');
         $table->integer('total');
+        $table->integer('keuntungan');
         $table->string('metode_pembayaran');
         $table->datetime('tanggal');
         $table->foreignId('user_id')

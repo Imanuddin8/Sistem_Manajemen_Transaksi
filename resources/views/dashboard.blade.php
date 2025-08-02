@@ -20,10 +20,10 @@
     <section class="content">
         <div class="container-fluid">
             <div
-                class="row justify-content-start align-items-center"
+                class="row justify-content-center align-items-center"
             >
                 <div class="col-lg-3 col-md-6">
-                    <div class="small-box bg-info p-1">
+                    <div class="small-box bg-primary p-1">
                         <div class="inner">
                             <div
                                 class="row justify-content-between align-items-center"
@@ -33,7 +33,7 @@
                                     <p>Jumlah Saldo</p>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fs-1 fa-solid fa-wallet" style="color: #148a9d;"></i>
+                                    <i class="fs-1 fa-solid fa-wallet" style="color: #0948e7;"></i>
                                 </div>
                             </div>
                         </div>
@@ -68,6 +68,23 @@
                                 </div>
                                 <div class="col-auto">
                                     <i class="fs-1 fa-solid fa-money-bill" style="color: #228e3b;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="small-box bg-info p-1">
+                        <div class="inner">
+                            <div
+                                class="row justify-content-between align-items-center"
+                            >
+                                <div class="col-auto">
+                                    <h4>{{ formatRupiah($totalKeuntungan) }}</h4>
+                                    <p>Keuntungan Hari Ini</p>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fs-1 fa-solid fa-money-check-dollar" style="color: #148a9d;"></i>
                                 </div>
                             </div>
                         </div>

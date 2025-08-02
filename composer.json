@@ -12,7 +12,8 @@
         "laravel/framework": "^10.0",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^4.0",
-        "realrashid/sweet-alert": "^7.2"
+        "realrashid/sweet-alert": "^7.2",
+        "snapappointments/bootstrap-select": "^1.13"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^2.0",

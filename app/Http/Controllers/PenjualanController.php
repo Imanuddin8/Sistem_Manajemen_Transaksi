@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 use Alert;
+use Carbon\Carbon;
 
 class PenjualanController extends Controller
 {
@@ -48,7 +49,8 @@ class PenjualanController extends Controller
     {
         // Mengambil semua data produk dan user dari database
         $user = User::all();
-        $produk = Produk::all();
+        // Ambil semua produk kecuali yang namanya 'Saldo'
+        $produk = produk::where('nama_produk', '!=', 'saldo')->get();
 
         // Ambil data dari request
         $produkIds = $request->produk_id;
@@ -80,10 +82,14 @@ class PenjualanController extends Controller
                 $total = $jumlah + $selectedProduct->harga_jual;
                 // Kurangi stok untuk semua produk dengan kategori 'saldo'
                 Produk::where('kategori', 'saldo')->decrement('stok', $jumlah);
+                // Set keuntungan ke harga_jual untuk produk kategori 'saldo'
+                $keuntungan = $selectedProduct->harga_jual;
             } else {
                 $total = $jumlah * $selectedProduct->harga_jual;
                 // Kurangi stok untuk produk yang bukan kategori 'saldo'
                 $selectedProduct->decrement('stok', $jumlah);
+                // Set keuntungan ke harga_jual - harga_beli untuk produk yang bukan kategori 'saldo'
+                $keuntungan = ($selectedProduct->harga_jual - $selectedProduct->harga_beli) * $jumlah;
             }
 
             // Simpan perubahan stok produk
@@ -100,9 +106,10 @@ class PenjualanController extends Controller
                 'produk_id' => $produkId,
                 'jumlah' => $jumlah,
                 'total' => $total,
+                'keuntungan' => $keuntungan,
                 'no' => $no,
                 'metode_pembayaran' => $request->metode_pembayaran,
-                'tanggal' => $request->tanggal,
+                'tanggal' => Carbon::now(),
                 'user_id' => Auth::id(),
                 'catatan' => $catatan,
             ]);
@@ -153,11 +160,15 @@ class PenjualanController extends Controller
             // Kurangi stok untuk semua produk dengan kategori 'saldo'
             produk::where('kategori', 'saldo')->increment('stok', $penjualan->jumlah); // Kembalikan stok sebelumnya
             produk::where('kategori', 'saldo')->decrement('stok', $jumlah); // Kurangi stok baru
+            // Set keuntungan ke harga_jual untuk produk kategori 'saldo'
+            $keuntungan = $selectedProduct->harga_jual;
         } else {
             $total = $jumlah * $selectedProduct->harga_jual;
             // Kurangi stok untuk produk yang bukan kategori 'saldo'
             $selectedProduct->increment('stok', $penjualan->jumlah); // Kembalikan stok sebelumnya
             $selectedProduct->decrement('stok', $jumlah); // Kurangi stok baru
+            // Set keuntungan ke harga_jual - harga_beli untuk produk yang bukan kategori 'saldo'
+            $keuntungan = ($selectedProduct->harga_jual - $selectedProduct->harga_beli) * $jumlah;
         }
 
         // Simpan perubahan stok produk
@@ -169,6 +180,7 @@ class PenjualanController extends Controller
             'no' => $request->no,               // Menyimpan no penjualan yang dikirim melalui request
             'jumlah' => $jumlah,                // Menyimpan jumlah penjualan yang telah diproses sebelumnya
             'total' => $total,                  // Menyimpan total harga penjualan yang telah dihitung sebelumnya
+            'keuntungan' => $keuntungan,
             'metode_pembayaran' => $request->metode_pembayaran,               // Menyimpan metode_pembayaran penjualan yang dikirim melalui request
             'tanggal' => $request->tanggal,     // Menyimpan tanggal penjualan yang dikirim melalui request
             'user_id' => Auth::id(),             // Menyimpan user_id dari pengguna yang sedang login
@@ -297,6 +309,9 @@ class PenjualanController extends Controller
         // Menghitung jumlah total
         $jumlahTotal = $penjualan->sum('total');
 
+        // Menghitung jumlah Keuntungan
+        $jumlahKeuntungan = $penjualan->sum('keuntungan');
+
         // Input tanggal mulai
         $tanggal_mulai = $request->input('tanggal_mulai');
 
@@ -307,6 +322,6 @@ class PenjualanController extends Controller
         $nama_produk = $request->input('nama_produk');
 
         // Mengarahkan ke route 'penjualan.cetak' untuk di cetak
-        return view('penjualan.cetak', compact('penjualan', 'user', 'produk', 'jumlahPenjualan', 'jumlahTotal', 'tanggal_mulai', 'tanggal_akhir', 'nama_produk'));
+        return view('penjualan.cetak', compact('penjualan', 'user', 'produk', 'jumlahPenjualan', 'jumlahTotal', 'tanggal_mulai', 'tanggal_akhir', 'nama_produk', 'jumlahKeuntungan'));
     }
 }

@@ -33,19 +33,25 @@
                                         <label for="exampleFormControlSelect1" class="form-label">Nama Produk</label>
                                         <select title="nama produk" name="produk_id[]" class="form-control" aria-label="Default select example" required>
                                             @foreach($produk as $item)
-                                                <option value="{{ $item->id }}" {{ $old_produk_id == $item->id ? 'selected' : '' }}>
+                                                {{-- <option value="{{ $item->id }}" {{ $old_produk_id == $item->id ? 'selected' : '' }}>
                                                     {{ $item->nama_produk }}
-                                                </option>
+                                                </option> --}}
+                                                @if($item->nama_produk !== 'saldo')
+                                                    <option value="{{ $item->id }}" {{ $old_produk_id == $item->id ? 'selected' : '' }}>
+                                                        {{ $item->nama_produk }}
+                                                    </option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-5 col-lg-3">
                                         <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
-                                        <input name="jumlah[]" type="text" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.' . $index) }}" required/>
+                                        <input name="jumlah[]" type="number" class="form-control" placeholder="Jumlah produk" oninput="formatNumber(this)" value="{{ old('jumlah.' . $index) }}" required oninvalid="this.setCustomValidity('Jumlah harus lebih dari 1')"
+                                        oninput="setCustomValidity('')" min="1"/>
                                     </div>
                                     <div class="col-5 col-lg-4">
                                         <label for="no" class="form-label">Nomor</label>
-                                        <input title="nomor" name="no[]" type="text" class="form-control" placeholder="Nomor" value="{{ old('no' . $index) }}">
+                                        <input title="nomor" name="no[]" type="text" oninput="formatNo(this)" class="form-control" placeholder="Nomor" value="{{ old('no' . $index) }}">
                                         <small class="form-text text-muted">Kosongi jika tidak ada nomor.</small>
                                     </div>
                                     <div class="col-2 col-lg-1 d-flex align-items-start" style="margin-top: 2.4rem;">
@@ -56,18 +62,12 @@
                                 </div>
                                 @endforeach
                             </div>
-                            <div class="row g-3 mb-3">
-                                <div class="col-12 col-lg-6">
-                                    <label for="metode_pembayaran" class="form-label">Metode Pembayaran</label>
-                                    <select title="metode pembayaran" name="metode_pembayaran" id="metode_pembayaran" class="form-control" aria-label="Default select example" required>
-                                        <option value="tunai" {{ old('metode_pembayaran') == 'tunai' ? 'selected' : '' }}>Tunai</option>
-                                        <option value="qris" {{ old('metode_pembayaran') == 'qris' ? 'selected' : '' }}>Qris</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-lg-6">
-                                    <label for="tanggal" class="form-label">Tanggal</label>
-                                    <input title="tanggal transaksi" name="tanggal" id="tanggal" type="datetime-local" class="form-control" required value="{{ old('tanggal') }}">
-                                </div>
+                            <div class="mb-3">
+                                <label for="metode_pembayaran" class="form-label">Metode Pembayaran</label>
+                                <select title="metode pembayaran" name="metode_pembayaran" id="metode_pembayaran" class="form-control" aria-label="Default select example" required>
+                                    <option value="tunai" {{ old('metode_pembayaran') == 'tunai' ? 'selected' : '' }}>Tunai</option>
+                                    <option value="qris" {{ old('metode_pembayaran') == 'qris' ? 'selected' : '' }}>Qris</option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="catatan" class="form-label">Catatan</label>
@@ -96,6 +96,10 @@
         function formatNumber(input) {
             let value = input.value.replace(/\D/g, '');
             value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            input.value = value;
+        }
+        function formatNo(input) {
+            let value = input.value.replace(/\D/g, '');
             input.value = value;
         }
         document.getElementById('add-row').addEventListener('click', function() {

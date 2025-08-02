@@ -14,6 +14,7 @@ class DashboardController extends Controller
     public function index()
     {
         // Mengambil semua data user dan produk
+        $penjualan = penjualan::all();
         $user = User::all();
         $produk = produk::all();
 
@@ -32,6 +33,11 @@ class DashboardController extends Controller
         // Menghitung total penjualan hari ini
         $totalSales = DB::table('penjualan')->whereDate('tanggal', $today)->count();
 
+        $totalKeuntungan = DB::table('penjualan')->whereDate('tanggal', $today)->sum('keuntungan');
+
+        // Memformat total ke dalam format Rupiah.
+        // $penjualan->formatted_total = formatRupiah($penjualan->keuntungan);
+
         // Menghitung total jumlah user
         $jumlahUser = $user->count();
 
@@ -39,6 +45,6 @@ class DashboardController extends Controller
         $jumlahProduk = $produk->count();
 
         // Mengembalikan view 'dashboard' dengan data yang telah dihitung
-        return view('dashboard', compact('saldoStok', 'totalSales', 'jumlahUser', 'jumlahProduk', 'data'));
+        return view('dashboard', compact('saldoStok', 'totalSales', 'jumlahUser', 'jumlahProduk', 'data', 'totalKeuntungan'));
     }
 }

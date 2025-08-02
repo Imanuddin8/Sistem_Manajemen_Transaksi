@@ -26,6 +26,7 @@
             <p>Produk : {{ $nama_produk ? $nama_produk : 'Semua produk'}}</p>
             <p>Jumlah transaksi penjualan : {{ number_format($jumlahPenjualan, 0, ',', '.') }}</p>
             <p>Jumlah total : Rp {{ number_format($jumlahTotal, 0, ',', '.') }}</p>
+            <p>Jumlah Keuntungan : Rp {{ number_format($jumlahKeuntungan, 0, ',', '.') }}</p>
         </div>
         <table>
             <thead class="text-center">

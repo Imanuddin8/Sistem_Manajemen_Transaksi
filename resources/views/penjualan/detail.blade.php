@@ -52,6 +52,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Keuntungan</td>
+                    <td>
+                        : {{formatRupiah($penjualan->keuntungan)}}
+                    </td>
+                </tr>
+                <tr>
                     <td>Tanggal & Waktu</td>
                     <td>
                         : {{formatDate($penjualan->tanggal)}}
